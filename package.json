@@ -1,25 +1,22 @@
 {
   "name": "idliketo",
   "version": "1.0.0",
-  "description": "",
-  "main": "src/index.js",
+  "description": "An util aiming to interact with shell by natural language",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node ./src/index.ts",
     "build": "tsc"
   },
-  "author": "",
+  "author": "Antonin Riche",
   "license": "ISC",
   "dependencies": {
-    "chalk": "^5.2.0",
-    "commander": "^10.0.1",
     "dotenv": "^16.0.3",
     "openai": "^3.2.1",
-    "readline": "^1.3.0",
-    "shell-history": "^2.0.0"
+    "readline": "^1.3.0"
   },
   "bin": {
-    "idliketo": "./src/index.js"
+    "idliketo": "./dist/index.js"
   },
   "devDependencies": {
     "@types/node": "^20.2.5",
