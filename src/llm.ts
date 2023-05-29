@@ -1,3 +1,4 @@
+import { getShellTerminal } from './shell';
 import {
     Configuration,
     OpenAIApi,
@@ -56,7 +57,7 @@ export const getShellCommand = async (
     const conversation:ChatCompletionRequestMessage[] = [
       {
         role: ChatCompletionResponseMessageRoleEnum.System,
-        content: `You are ShellGPT, your responsability is to translate the user requirement into a valid shell command. /bin/sh is the only available shell.`
+        content: `You are ShellGPT, your responsability is to translate the user requirement into a valid shell command. ${getShellTerminal()} is the only available shell.`
       },
       {
         role: ChatCompletionResponseMessageRoleEnum.System,
@@ -96,6 +97,9 @@ export const getShellCommand = async (
         temperature: 0,
         //stop: ["```", "\n"],
         messages: conversation
+      }).catch(err=>{
+        console.error(err)
+        throw err
       });
       const assistant_output = completion.data.choices[0]?.message?.content 
       assistant_output && conversation.push({

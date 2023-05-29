@@ -18,9 +18,23 @@ async function askUserForApiKey(): Promise<string> {
     return apiKey;
 }
 
-
-
 let apikey = "";
+
+
+export const clearOpenAIApiKey = async (): Promise<void> => {
+    const apiKeyPath = os.homedir() + '/.idliketo';
+    apikey = "";
+    if (fs.existsSync(apiKeyPath)) {
+        const file_content = fs.existsSync(apiKeyPath) ? fs.readFileSync(apiKeyPath, 'utf8') : '';
+        const env = dotenv.parse(file_content)
+        env.OPENAI_API_KEY = apikey
+        const newEnv = Object.entries(env).map(([key, value]) => `${key}=${value}`).join('\n')
+        fs.writeFileSync(apiKeyPath, newEnv);
+    }
+}
+
+
+
 export const getOpenAIApiKey = async (): Promise<string> => {
     if (apikey) {
         return apikey;
