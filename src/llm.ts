@@ -18,7 +18,6 @@ Operating system type: ${os.type()}
 Operating system version: ${os.version()}
 
 Username: ${os.userInfo().username}
-Shell: ${os.userInfo().shell}
 Home directory: ${os.userInfo().homedir}
 
 Current directory: ${process.cwd()}
@@ -57,7 +56,7 @@ export const getShellCommand = async (
     const conversation:ChatCompletionRequestMessage[] = [
       {
         role: ChatCompletionResponseMessageRoleEnum.System,
-        content: `You are ShellGPT, your responsability is to translate the user requirement into a shell command.`
+        content: `You are ShellGPT, your responsability is to translate the user requirement into a valid shell command. /bin/sh is the only available shell.`
       },
       {
         role: ChatCompletionResponseMessageRoleEnum.System,
@@ -69,15 +68,15 @@ export const getShellCommand = async (
       },*/
       {
         role: ChatCompletionResponseMessageRoleEnum.System,
-        content: "If your command apply to a specific terminal, you should invoke it (for instance ```powershell.exe ...```, ```bin/bash ...```, etc.)."
-      },
-      {
-        role: ChatCompletionResponseMessageRoleEnum.System,
         content: "Don't provide any extra explainations. Provide only the command on a single line between triple-quotes (```). If the request is not clear, try doing your best. This apply to all your responses."
       },
       {
         role: ChatCompletionResponseMessageRoleEnum.System,
         content: 'For instance, if the user says "I would like to list all the files in the current directory", you should respond with "```\nls -l\n```".'
+      },
+      {
+        role: ChatCompletionResponseMessageRoleEnum.System,
+        content: 'Your output should be a valid shell command and should fit on a single line.'
       },
       {
         role: ChatCompletionResponseMessageRoleEnum.User,
@@ -103,7 +102,7 @@ export const getShellCommand = async (
         role: ChatCompletionResponseMessageRoleEnum.Assistant,
         content: assistant_output 
       })
-      const command = assistant_output?.split("```")[1]?.split("```")[0].replace(/\n/g, '')
+      const command = assistant_output?.split("```")[1]?.split("```")[0].split('\n').filter(line => line.trim().length > 0).join(';')
       if(!command){
         // TODO: move this logic outside llm module
         console.error('\t\x1b[0;31m',assistant_output,'\x1b[0m')

@@ -2,7 +2,7 @@ import { getOpenAIApiKey } from './apiKey';
 import { shellHistory } from './shell-history';
 import { getShellCommand } from './llm';
 import { input } from './cli';
-import { spawn } from "child_process";
+import { spawn, exec, execSync } from "child_process";
 
 // filter items after the one containing 'idliketo'
 const command_arg = process.argv.filter((item) => item.includes('idliketo')).pop()
@@ -11,7 +11,6 @@ const args = command_arg ? process.argv.filter((item,i) => i > command_index) : 
 
 const user_request = args.join(' ');
 
-// console.log('shellHistory()', shellHistory());
 
 (async () => {
     const apiKey = await getOpenAIApiKey()
@@ -25,8 +24,7 @@ const user_request = args.join(' ');
         console.log('Enter y to execute or write a feedback to improve')
         const feedback = await input()
         if(feedback === 'y'){
-            console.log('Executing command')
-            const [cmd, ...args] = command!.split(' ');
+            /*const [cmd, ...args] = command!.split(' ');
 
             const child_process = spawn(cmd, args);
 
@@ -42,7 +40,23 @@ const user_request = args.join(' ');
                 process.exit(code ||0);
             });
             
-            break;
+            break;*/
+            const child_process = exec(command!, {
+                shell: 'sh',
+            }, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(error.message);
+                    process.exit(1);
+                }
+                console.error(stderr);
+                console.log(stdout);
+                process.exit(0);
+            });
+            await new Promise(resolve => {
+                child_process.on('exit', (code) => {
+                    resolve(code);
+                });
+            });
         } else {
             command = await improve(feedback)
         }
