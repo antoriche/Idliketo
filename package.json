@@ -2,6 +2,10 @@
   "name": "idliketo",
   "version": "1.0.0",
   "description": "An util aiming to interact with shell by natural language",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antoriche/Idliketo"
+  },
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
