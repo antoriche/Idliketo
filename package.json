@@ -1,6 +1,6 @@
 {
   "name": "idliketo",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "An util aiming to interact with shell by natural language",
   "repository": {
     "type": "git",
@@ -9,7 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node ./src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "postbuild":"node add-shebang.js"
   },
   "author": "Antonin Riche",
   "license": "ISC",

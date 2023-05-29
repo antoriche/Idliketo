@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { getOpenAIApiKey, clearOpenAIApiKey } from './apiKey';
 import { getShellCommand } from './llm';
 import { input } from './cli';

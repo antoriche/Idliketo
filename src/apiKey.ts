@@ -5,7 +5,8 @@ import dotenv from 'dotenv';
 import { input } from './cli';
 
 async function askUserForApiKey(): Promise<string> {
-    console.log('Please enter your OpenAI API key :');
+    console.log('Please enter your OpenAI API key');
+    console.log('Visit https://platform.openai.com/account/api-keys to get one');
     let apiKey = await input('API key : ');
     let checkOk:boolean = false
     while(!checkOk){

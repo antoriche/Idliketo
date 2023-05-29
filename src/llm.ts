@@ -37,7 +37,6 @@ export const testApiKey = async (apiKey: string): Promise<boolean> => {
   }).then(_ =>{
     return true
   }).catch(err => {
-    console.error(err)
     return false
   });
 }
@@ -95,12 +94,9 @@ export const getShellCommand = async (
       const completion = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         temperature: 0,
-        //stop: ["```", "\n"],
         messages: conversation
-      }).catch(err=>{
-        console.error(err)
-        throw err
       });
+
       const assistant_output = completion.data.choices[0]?.message?.content 
       assistant_output && conversation.push({
         role: ChatCompletionResponseMessageRoleEnum.Assistant,
